@@ -22,19 +22,19 @@
 <body>
     <form method="post" action="thirdpage.php">
     <?php
-        $file = fopen("copyto3page.txt","w");
+        $file = fopen("questions.txt","w");
         for($i=1; $i <= $_POST["question_count"]; $i++)
         {
-            $questionvariable1 = rand(20,50);
-            $questionvariable2 = rand(10,40);
-            $answer = $questionvariable1 + $questionvariable2;
-            fwrite($file, $questionvariable1."+".$questionvariable2."=?#".$answer."\n");
+            $question_variable1 = rand(20,50);
+            $question_variable2 = rand(10,40);
+            $answer = $question_variable1 + $question_variable2;
+            fwrite($file, $question_variable1."+".$question_variable2."=?#".$answer."\n");
     ?>
-        <p><?= $i ?>. <?= $questionvariable1 ?> + <?= $questionvariable2 ?> = ?</p>
+        <p><?= $i ?>. <?= $question_variable1 ?> + <?= $question_variable2 ?> = ?</p>
         <p>Enter your answer: <input type="number" name="answer<?= $i ?>" min="20" max="100"></p>
         <br>
     <? } ?>
-    
+
         <button class="button">submit</button>
     </form>
 </body>
