@@ -22,20 +22,21 @@
       </tr>
 
       <?php
-      $file = fopen("questions.txt","r");
-      $content = fread($file, filesize("questions.txt"));
-      $question_sets = explode("\n", $content);
-    
-      for($i=1; $i < sizeof($question_sets); $i++)
-      {
-        $question_set = explode("#",$question_sets[$i-1]);
-      ?>
+      $file = fopen("questions.csv","r");
+      $i = 0;
+      while(true){
+        $question_sets = fgetcsv($file);
+        $i++;
+        if($question_sets == false){
+          break;
+        }
+         ?>
       <tr>
         <td><?=$i?></td>
-        <td><?=$question_set[0]?></td>
+        <td><?=$question_sets[0]?></td>
         <td><?=$_POST["answer" . $i]?></td>
-        <td><?=$question_set[1]?></td>
-        <td><?php echo ($_POST["answer" . $i] == $question_set[1])? "True" : "False";?></td>
+        <td><?=$question_sets[1]?></td>
+        <td><?php echo ($_POST["answer" . $i] == $question_sets[1])? "True" : "False";?></td>
       </tr>
       <?}?>
     </table>

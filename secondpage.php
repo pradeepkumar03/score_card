@@ -22,13 +22,13 @@
 <body>
     <form method="post" action="thirdpage.php">
     <?php
-        $file = fopen("questions.txt","w");
+        $file = fopen("questions.csv","w");
         for($i=1; $i <= $_POST["question_count"]; $i++)
         {
             $question_variable1 = rand(20,50);
             $question_variable2 = rand(10,40);
             $answer = $question_variable1 + $question_variable2;
-            fwrite($file, $question_variable1."+".$question_variable2."=?#".$answer."\n");
+            fputcsv($file,[$question_variable1."+".$question_variable2."=?",$answer]);
     ?>
         <p><?= $i ?>. <?= $question_variable1 ?> + <?= $question_variable2 ?> = ?</p>
         <p>Enter your answer: <input type="number" name="answer<?= $i ?>" min="20" max="100"></p>
