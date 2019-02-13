@@ -22,21 +22,18 @@
       </tr>
 
       <?php
-      $file = fopen("questions.csv","r");
-      $i = 0;
-      while(true){
-        $question_sets = fgetcsv($file);
-        $i++;
-        if($question_sets == false){
-          break;
-        }
-         ?>
+      $file = fopen("questions.json","r");
+      $content = fread($file, filesize("questions.json"));
+      $question_sets = json_decode($content, True)['questions'];
+      foreach($question_sets as $i => $question_set)
+      {
+       ?>
       <tr>
-        <td><?=$i?></td>
-        <td><?=$question_sets[0]?></td>
-        <td><?=$_POST["answer" . $i]?></td>
-        <td><?=$question_sets[1]?></td>
-        <td><?php echo ($_POST["answer" . $i] == $question_sets[1])? "True" : "False";?></td>
+        <td><?=$i+1?></td>
+        <td><?= $question_set['question']?></td>
+        <td><?=$_POST["answer" . (string)($i+1)]?></td>
+        <td><?=$question_set['answer']?></td>
+        <td><?php echo ($_POST["answer" . (string)($i+1)] == $question_set['answer'])? "True" : "False";?></td>
       </tr>
       <?}?>
     </table>

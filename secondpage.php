@@ -22,18 +22,22 @@
 <body>
     <form method="post" action="thirdpage.php">
     <?php
-        $file = fopen("questions.csv","w");
+        $file = fopen("questions.json","w");
+        $listOfQuestions = [];
         for($i=1; $i <= $_POST["question_count"]; $i++)
         {
             $question_variable1 = rand(20,50);
             $question_variable2 = rand(10,40);
             $answer = $question_variable1 + $question_variable2;
-            fputcsv($file,[$question_variable1."+".$question_variable2."=?",$answer]);
-    ?>
+            array_push($listOfQuestions, ['question' => $question_variable1."+".$question_variable2."=?" ,'answer' => $answer]);
+             ?>
         <p><?= $i ?>. <?= $question_variable1 ?> + <?= $question_variable2 ?> = ?</p>
         <p>Enter your answer: <input type="number" name="answer<?= $i ?>" min="20" max="100"></p>
         <br>
-    <? } ?>
+    <?php
+    }
+    fwrite($file, json_encode(["questions" => $listOfQuestions]));
+    ?>
 
         <button class="button">submit</button>
     </form>
