@@ -22,20 +22,20 @@
       </tr>
 
       <?php
-      $file = fopen("questions.json","r");
-      $content = fread($file, filesize("questions.json"));
-      $question_sets = json_decode($content, True)['questions'];
-      foreach($question_sets as $i => $question_set)
-      {
+       
+        $db = new PDO('sqlite:questions.db');
+
+        $questions = $db->query('SELECT * FROM questionset');
+        foreach ($questions as $question) {
        ?>
-      <tr>
-        <td><?=$i+1?></td>
-        <td><?= $question_set['question']?></td>
-        <td><?=$_POST["answer" . (string)($i+1)]?></td>
-        <td><?=$question_set['answer']?></td>
-        <td><?php echo ($_POST["answer" . (string)($i+1)] == $question_set['answer'])? "True" : "False";?></td>
-      </tr>
-      <?}?>
+        <tr>
+          <td><?=$question['id']?></td>
+          <td><?= $question['question']?></td>
+          <td><?=$_POST["answer" . $question['id']]?></td>
+          <td><?=$question['answer']?></td>
+          <td><?php echo ($_POST["answer" . $question['id']] == $question['answer'])? "True" : "False";?></td>
+        </tr>
+      <?php }?>
     </table>
   </body>
 </html>

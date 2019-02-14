@@ -22,7 +22,14 @@
 <body>
     <form method="post" action="thirdpage.php">
     <?php
-        $file = fopen("questions.json","w");
+        $db = new PDO('sqlite:questions.db');
+        $db->exec("DROP TABLE IF EXISTS questionset");
+        $db->exec(
+            "CREATE TABLE IF NOT EXISTS questionset (
+                id INTEGER PRIMARY KEY, 
+                question TEXT, 
+                answer INTEGER)"
+            );
         $listOfQuestions = [];
         for($i=1; $i <= $_POST["question_count"]; $i++)
         {
@@ -36,7 +43,21 @@
         <br>
     <?php
     }
-    fwrite($file, json_encode(["questions" => $listOfQuestions]));
+     $insert = "INSERT INTO questionset (question, answer) VALUES (:question, :answer)";
+     $stmt = $db->prepare($insert);
+     
+     if($stmt == false) {
+         return "Invalid table name";
+     }
+ 
+     $stmt->bindParam(':question', $question);
+     $stmt->bindParam(':answer', $answer);
+     
+     foreach ($listOfQuestions as $item) {
+         $question = $item['question'];
+         $answer = $item['answer'];
+         $stmt->execute();
+     }
     ?>
 
         <button class="button">submit</button>
